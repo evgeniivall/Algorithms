@@ -1,18 +1,24 @@
 #ifndef ITERATOR_H
 #define ITERATOR_H
 
+template <typename T>
+class List;
+
+
+
 template<class T>
 class iterator
 {
 private:
-    T* current;
+    typename List<T>::Node* current;
 public:
     iterator():current(NULL){}
-    explicit iterator(T* ptr):current(ptr){}
+    iterator(const iterator<T> & other);
+    explicit iterator(typename List<T>::Node* ptr):current(ptr){}
     iterator<T>& operator =(const iterator<T>& other);
 
     T& operator*();
-    const int& operator*() const;
+    const T& operator*() const;
     T* operator->();
     iterator& operator++();
     iterator operator++(int);
@@ -24,9 +30,14 @@ public:
     iterator& operator+=(const std::size_t& n);
     iterator& operator-=(const std::size_t& n);
 
-    std::ptrdiff_t operator-(const iterator<T> & other);
-    T* base() const;
+    typename List<T>::Node* base() const;
 };
+
+template<class T>
+iterator<T>::iterator(const iterator<T> & other)
+{
+    current = other.current;
+}
 
 template<class T>
 iterator<T>& iterator<T>::operator =(const iterator<T>& other)
@@ -41,81 +52,97 @@ iterator<T>& iterator<T>::operator =(const iterator<T>& other)
 template<class T>
 T& iterator<T>::operator*()
 {
-    return *current;
+    return current->data;
 }
 
 template<class T>
-const int& iterator<T>::operator*() const
+const T& iterator<T>::operator*() const
 {
-    return *current;
+    return current->data;
 }
 
 template<class T>
 T* iterator<T>::operator ->()
 {
-    return current;
+    return &(current->data);
 }
 
 template<class T>
 iterator<T>& iterator<T>::operator++()
 {
-    current++;
+	current = current->next;
     return *this;
 }
 
 template<class T>
 iterator<T> iterator<T>::operator++(int)
 {
-    return iterator(current++);
+    iterator temp = *this;
+    ++(*this);
+    return temp;
 }
 
 template<class T>
 iterator<T>& iterator<T>::operator--()
 {
-    current--;
+	current = current->prev;
     return *this;
 }
 
 template<class T>
 iterator<T> iterator<T>::operator--(int)
 {
-    return iterator(current--);
+    iterator temp = *this;
+    --(*this);
+    return temp;
 }
 
 template<class T>
 iterator<T> iterator<T>::operator+(const std::size_t& n) const
 {
-    return iterator(current + n);
+    iterator<T> it(*this);
+    for(std::size_t i = 0; i < n; i++)
+    {
+        ++it;
+    }
+    return it;
 }
 
 template<class T>
 iterator<T> iterator<T>::operator-(const std::size_t& n) const
 {
-    return iterator(current - n);
+    iterator<T> it(*this);
+    for(std::size_t i = 0; i < n; i++)
+    {
+        --it;
+    }
+    return it;
 }
 
 template<class T>
 iterator<T>& iterator<T>::operator+=(const std::size_t& n)
 {
-    current += n;
+    for(std::size_t i = 0; i < n; i++)
+    {
+        ++(*this);
+    }
     return *this;
 }
 
 template<class T>
 iterator<T>& iterator<T>::operator-=(const std::size_t& n)
 {
-    current -= n;
+    for(std::size_t i = 0; i < n; i++)
+    {
+        --(*this);
+    }
     return *this;
 }
 
-template<class T>
-std::ptrdiff_t iterator<T>::operator -(const iterator<T> & other)
-{
-    return current - other.current;
-}
+
 
 template<class T>
-T* iterator<T>::base() const { return current; }
+typename List<T>::Node* iterator<T>::base() const { return current; }
 
 template <class T>
 inline bool operator==(const iterator<T> &lhs, const iterator<T> &rhs)

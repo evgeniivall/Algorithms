@@ -1,107 +1,52 @@
 #include <iostream>
-#include "conio.h"
+#include "algorithms.h"
+#include "List_Class.h"
 
-
-using namespace std;
-
-//Functions for sorting
-void bubbleSort(int* arrayToSort, int n);
-void insertSort(int* arrayToSort, int n);
-void selectionSort(int* arrayToSort, int n);
-
-void arrayPrint(int* arrayToPrint, int n);
+using std::cout;
+using std::endl;
 
 int main()
 {
-	int SIZE;
-	cout << "Input the size of the array: ";
-	cin >> SIZE;
+    List<int> l;
+    l.push_back(10);
+    l.push_back(20);
+    l.push_back(10);
+    l.push_back(20);
 
-	int *arr = new int[SIZE]; 
+    l.push_front(1);
+    l.push_front(2);
+    l.push_front(1);
+    l.push_front(2);
 
-	cout << "Input the array: " << endl;
-	for (int i = 0; i < SIZE; i++)
-	{
-		cout << "Input the element [" << i << "]: ";
-		cin >> arr[i];
-	}
+    List<int> l2 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    for(auto i = l2.begin(); i != l2.end(); i++)
+    {
+        cout << *i << " ";
+    }
 
-	cout << endl << "1 - Bubble Sort\n2 - Insert Sort\n3 - Selection Sort \n\nChoose the method of sorting:";
-	char choise = _getch();
+    cout << endl;
+    l.pop_back();
+    l.pop_back();
 
-	cout << endl << "Old array: \t";
-	arrayPrint(arr, SIZE);
-	cout << endl;
-	switch (choise)
-	{
-	case '1':	bubbleSort(arr, SIZE);		break;
-	case '2':	insertSort(arr, SIZE);		break;
-	case '3':	selectionSort(arr, SIZE);	break;
-	}
-	
-	cout << "Sorted array: \t" ;
-	arrayPrint(arr, SIZE);
-	
-	cout << endl << endl;
-	delete[] arr;
-	system("pause");
-	return 0;
-}
+    selectionSort(l.begin(), l.end());
+    reverse(l2.begin(), l2.end());
+    for(auto i = l2.begin(); i != l2.end(); i++)
+    {
+        cout << *i << " ";
+    }
 
-void bubbleSort(int* arrayToSort, int n)
-{
-	for (int i = 0; i < (n - 1); i++)
-	{
-		for (int j = 0; j < (n - 1 - i); j++)
-		{
-			if (arrayToSort[j] > arrayToSort[j + 1])
-			{
-				int temp = arrayToSort[j];
-				arrayToSort[j] = arrayToSort[j + 1];
-				arrayToSort[j + 1] = temp;
-			}
-		}
-	}
-}
+    int array[10] = {1, 3, 5, 8, 9,3, 2, 5};
 
-void insertSort(int* arrayToSort, int n)
-{
-	for (int i = 1; i < n; i++)
-	{
-		for (int j = i; j < 0; j--)
-		{
-			if (arrayToSort[j - 1] > arrayToSort[j])
-			{
-				int temp = arrayToSort[j];
-				arrayToSort[j] = arrayToSort[j + 1];
-				arrayToSort[j + 1] = temp;
-			}
-		}
-	}
+    insertSort(&array[0], &(array[10]));
+    reverse(&array[0], &(array[10]));
 
-}
 
-void selectionSort(int* arrayToSort, int n)
-{
-	for (int i = 0; i < (n - 1); i++)
-	{
-		int min = i;
-		for (int j = i + 1; j < n; j++)
-		{
-			if (arrayToSort[j] < arrayToSort[min])
-				min = j;
-		}
-		int temp = arrayToSort[i];
-		arrayToSort[i] = arrayToSort[min];
-		arrayToSort[min] = temp;
-	}
+    cout << endl;
+    for(int i = 0; i < 10; i++)
+    {
+        cout << array[i] << " ";
+    }
 
-}
 
-void arrayPrint(int* arrayToPrint, int n)
-{
-	for (int i = 0; i < n; i++)
-	{
-		cout << arrayToPrint[i] << " ";
-	}
+    return 0;
 }
