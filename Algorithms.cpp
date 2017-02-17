@@ -5,47 +5,51 @@
 using std::cout;
 using std::endl;
 
+
+void minus(int& value)
+{
+    value = -(value);
+}
+
 int main()
 {
-    List<int> l;
-    l.push_back(10);
-    l.push_back(20);
-    l.push_back(10);
-    l.push_back(20);
-
-    l.push_front(1);
-    l.push_front(2);
-    l.push_front(1);
-    l.push_front(2);
-
-    List<int> l2 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    for(auto i = l2.begin(); i != l2.end(); i++)
+    List<int> l = {2, 2, 6, 8, 1, 2,  5, 7, 8, 2, 1,1};
+    cout << "List: ";
+    for(auto i = l.begin(); i != l.end(); i++)
     {
         cout << *i << " ";
     }
 
-    cout << endl;
-    l.pop_back();
-    l.pop_back();
-
+    cout << endl << "List: ";
     selectionSort(l.begin(), l.end());
-    reverse(l2.begin(), l2.end());
-    for(auto i = l2.begin(); i != l2.end(); i++)
+    for(auto i = l.begin(); i != l.end(); i++)
     {
         cout << *i << " ";
     }
+    transform(l.begin(), l.end(), minus);
+    cout << endl << "List: ";
+    for(auto i = l.begin(); i != l.end(); i++)
+    {
+        cout << *i << " ";
+    }
+    cout << endl << "Min: " << *(findMin(l.begin(), l.end()));
+    cout << endl << "Max: " << *(findMax(l.begin(), l.end()));
 
     int array[10] = {1, 3, 5, 8, 9,3, 2, 5};
-
-    insertSort(&array[0], &(array[10]));
-    reverse(&array[0], &(array[10]));
-
-
-    cout << endl;
+    cout << endl << "Array  : ";
     for(int i = 0; i < 10; i++)
     {
         cout << array[i] << " ";
     }
+
+    transform(&array[0], &array[10], minus);
+    cout << endl << "Array  : ";
+    for(int i = 0; i < 10; i++)
+    {
+        cout << array[i] << " ";
+    }
+    cout << endl << "Min: " << *(findMin(&array[0],&array[10]));
+    cout << endl << "Max: " << *(findMax(&array[0],&array[10]));
 
 
     return 0;

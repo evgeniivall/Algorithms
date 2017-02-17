@@ -128,4 +128,75 @@ void reverse(T *start, T *end)
 }
 
 
+template<template <typename> class Iterator, typename T, typename Comp = bool(*)(const T&, const T&)>
+Iterator<T> findMin(Iterator<T> start, Iterator<T> end,  Comp less = defaultCmp)
+{
+    Iterator<T> min = start;
+    for (Iterator<T> i = (start + 1); i != end; i++)
+    {
+        if ((less(*i,*min)))
+            min = i;
+    }
+    return min;
+}
+
+template<class T, class Comp = bool(*)(const T&, const T&)>
+T* findMin(T *start, T *end,  Comp less = defaultCmp)
+{
+    T* min = start;
+    for (T *i = (start + 1); i != end; i++)
+    {
+        if ((less(*i,*min)))
+            min = i;
+    }
+    return min;
+}
+
+
+
+template<template <typename> class Iterator, typename T, typename Comp = bool(*)(const T&, const T&)>
+Iterator<T> findMax(Iterator<T> start, Iterator<T> end,  Comp less = defaultCmp)
+{
+    Iterator<T> max = start;
+    for (Iterator<T> i = (start + 1); i != end; i++)
+    {
+        if (!(less(*i,*max)))
+            max = i;
+    }
+    return max;
+}
+
+template<class T, class Comp = bool(*)(const T&, const T&)>
+T* findMax(T *start, T *end,  Comp less = defaultCmp)
+{
+    T* max = start;
+    for (T *i = (start + 1); i != end; i++)
+    {
+        if (!(less(*i,*max)))
+            max = i;
+    }
+    return max;
+}
+
+template<template <typename> class Iterator, typename T, typename Func>
+void transform(Iterator<T> start, Iterator<T> end, Func unaryfunc)
+{
+    for (Iterator<T> i = start; i != end; i++)
+    {
+        unaryfunc(*i);
+    }
+}
+
+
+template <typename T, typename Func>
+void transform(T* start, T* end, Func unaryfunc)
+{
+    for (T* i = start; i != end; i++)
+    {
+        unaryfunc(*i);
+    }
+}
+
+
+
 #endif // ALGORITHMS_H
